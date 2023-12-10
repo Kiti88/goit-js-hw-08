@@ -63,124 +63,56 @@ const images = [
     description: "Lighthouse Coast Sea",
   },
 ];
-const galleryContainer = document.querySelector('.gallery');
+// Динамічне створення галереї
+  const galleryContainer = document.querySelector('.gallery');
+  const galleryItems = images.map(image => {
+    const li = document.createElement('li');
+    li.classList.add('gallery-item');
 
-const galleryItems = images.map(image => {
-  const li = document.createElement('li');
-  li.classList.add('gallery-item');
+    const link = document.createElement('a');
+    link.classList.add('gallery-link');
+    link.href = image.original;
 
-  const link = document.createElement('a');
-  link.classList.add('gallery-link');
-  link.href = image.original;
+    const img = document.createElement('img');
+    img.classList.add('gallery-image');
+    img.src = image.preview;
+    img.alt = image.description;
 
-  const img = document.createElement('img');
-  img.classList.add('gallery-image');
-  img.src = image.preview;
-  img.dataset.source = image.original;
-  img.alt = image.description;
+    link.appendChild(img);
+    li.appendChild(link);
 
-  link.appendChild(img);
-  li.appendChild(link);
+    return li;
+  });
 
-  return li;
-});
+  galleryContainer.append(...galleryItems);
 
-galleryContainer.append(...galleryItems);
+  // Прослуховування кліка по зображенню
+  galleryContainer.addEventListener('click', handleGalleryClick);
 
-galleryContainer.addEventListener('click', handleGalleryClick);
+  function handleGalleryClick(event) {
+    event.preventDefault();
 
-function handleGalleryClick(event) {
-  event.preventDefault();
+    if (event.target.nodeName !== 'IMG') {
+      return;
+    }
 
-  if (event.target.nodeName !== 'IMG') {
-    return;
+    const largeImageUrl = event.target.parentNode.href;
+    openModal(largeImageUrl);
   }
 
-  const largeImageUrl = event.target.dataset.source;
+  function openModal(largeImageUrl) {
+    const instance = basicLightbox.create(`<img src="${largeImageUrl}">`);
+    instance.show();
 
-  // Виклик функції для відкриття модального вікна зі збільшеною версією зображення.
-  openModal(largeImageUrl);
-}
-function openModal(largeImageUrl) {
-  const instance = basicLightbox.create(`<img src="${largeImageUrl}">`);
-  instance.show();
+    // Прослуховування події натискання клавіші Escape
+    document.addEventListener('keydown', handleKeyPress);
 
-  // Прослуховування події натискання клавіші Escape
-  document.addEventListener('keydown', handleKeyPress);
-
-  function handleKeyPress(event) {
-    if (event.code === 'Escape') {
-      instance.close();
-      // Прибрати обробник події після закриття модального вікна
-      document.removeEventListener('keydown', handleKeyPress);
+    function handleKeyPress(event) {
+      if (event.code === 'Escape') {
+        instance.close();
+        // Видалення обробника події після закриття модального вікна
+        document.removeEventListener('keydown', handleKeyPress);
+      }
     }
   }
-}
-// Дані для галереї
-const images = [
-  // Об'єкти зображень тут
-];
-
-// Отримання посилання на велике зображення
-function getLargeImageSrc(index) {
-  return images[index].original;
-}
-
-// Прослуховування кліка по зображенню в галереї
-document.querySelector('.gallery').addEventListener('click', function (event) {
-  event.preventDefault();
-
-  if (event.target.tagName === 'IMG') {
-    const index = Array.from(event.target.parentNode.parentNode.children).indexOf(event.target.parentNode);
-
-    // Отримання посилання на велике зображення
-    const largeImageSrc = getLargeImageSrc(index);
-
-    // Встановлення значення атрибута src для модального вікна
-    document.getElementById('lightbox-image').src = largeImageSrc;
-
-    // Відкриття модального вікна
-    const lightbox = new basicLightbox(document.getElementById('lightbox'));
-    lightbox.show();
-
-    // Прослуховування клавіші Escape
-    document.addEventListener('keydown', function closeLightboxOnEscape(event) {
-      if (event.key === 'Escape') {
-        // Закриття модального вікна
-        lightbox.close();
-        // Видалення події клавіші Escape
-        document.removeEventListener('keydown', closeLightboxOnEscape);
-      }
-    });
-
-    // Прослуховування кліка на кнопці "Close"
-    document.getElementById('close-lightbox').addEventListener('click', function () {
-      // Закриття модального вікна
-      lightbox.close();
-    });
-  }
-});
-// Відкриття модального вікна
-const lightbox = basicLightbox.create(document.getElementById('lightbox'), {
-  onShow: (instance) => {
-    // Прослуховування клавіші Escape
-    document.addEventListener('keydown', closeLightboxOnEscape);
-  },
-  onClose: (instance) => {
-    // Видалення прослуховувача події клавіші Escape
-    document.removeEventListener('keydown', closeLightboxOnEscape);
-  },
-});
-
-// Функція для закриття модального вікна при натисканні клавіші Escape
-function closeLightboxOnEscape(event) {
-  if (event.key === 'Escape') {
-    lightbox.close();
-  }
-}
-
-// Прослуховування кліка на кнопці "Close"
-document.getElementById('close-lightbox').addEventListener('click', function () {
-  // Закриття модального вікна
-  lightbox.close();
-});
+</script>
