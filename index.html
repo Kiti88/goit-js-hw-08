@@ -3,10 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>js-hw-8</title>
+    <link rel="stylesheet" href="./css/styles.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.css"/>
 </head>
 <body>
-    <h1>Привіт</h1>
-    
+    <ul class="gallery">
+        <li class="gallery-item">
+            <a class="gallery-link" href="large-image.jpg">
+                <img class="gallery-image" src="small-image.jpg" data-source="large-image.jpg" alt="Image description" />
+            </a>
+        </li>
+    </ul>
+    <script 
+        src="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js"
+        async>
+    </script>
+    <script type="module" src="./js/gallery.js" defer></script>
 </body>
+<!-- HTML розмітка для модального вікна -->
+<div id="lightbox" class="basicLightbox">
+    <img id="lightbox-image" src="" alt="Large Image">
+    <button id="close-lightbox">Close</button>
+</div>
 </html>
