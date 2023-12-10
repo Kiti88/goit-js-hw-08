@@ -160,3 +160,27 @@ document.querySelector('.gallery').addEventListener('click', function (event) {
     });
   }
 });
+// Відкриття модального вікна
+const lightbox = basicLightbox.create(document.getElementById('lightbox'), {
+  onShow: (instance) => {
+    // Прослуховування клавіші Escape
+    document.addEventListener('keydown', closeLightboxOnEscape);
+  },
+  onClose: (instance) => {
+    // Видалення прослуховувача події клавіші Escape
+    document.removeEventListener('keydown', closeLightboxOnEscape);
+  },
+});
+
+// Функція для закриття модального вікна при натисканні клавіші Escape
+function closeLightboxOnEscape(event) {
+  if (event.key === 'Escape') {
+    lightbox.close();
+  }
+}
+
+// Прослуховування кліка на кнопці "Close"
+document.getElementById('close-lightbox').addEventListener('click', function () {
+  // Закриття модального вікна
+  lightbox.close();
+});
