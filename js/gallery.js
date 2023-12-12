@@ -100,19 +100,20 @@ const images = [
     const largeImageUrl = event.target.parentNode.href;
     openModal(largeImageUrl);
   }
+function openModal(largeImageUrl) {
+  const instance = basicLightbox.create(`<img src="${largeImageUrl}" alt="${images.description}">`);
+  instance.show();
 
-  function openModal(largeImageUrl) {
-    const instance = basicLightbox.create(`<img src="${largeImageUrl}">`);
-    instance.show();
+  // Прослуховування події натискання клавіші Escape
+  document.addEventListener('keydown', handleKeyPress);
 
-    // Прослуховування події натискання клавіші Escape
-    document.addEventListener('keydown', handleKeyPress);
-
-    function handleKeyPress(event) {
-      if (event.code === 'Escape') {
-        instance.close();
-        // Видалення обробника події після закриття модального вікна
-        document.removeEventListener('keydown', handleKeyPress);
-      }
+  function handleKeyPress(event) {
+    if (event.code === 'Escape') {
+      instance.close();
+      // Видалення обробника події після закриття модального вікна
+      document.removeEventListener('keydown', handleKeyPress);
     }
   }
+}
+
+  
