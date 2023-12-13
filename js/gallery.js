@@ -90,27 +90,32 @@ const images = [
   // Прослуховування кліка по зображенню
   galleryContainer.addEventListener('click', handleGalleryClick);
 
-  function handleGalleryClick(event) {
-    event.preventDefault();
+function handleGalleryClick(event) {
+  event.preventDefault();
 
-    if (event.target.nodeName !== 'IMG') {
-      return;
-    }
+  const targetImg = event.target.closest('.gallery-image');
 
-    const largeImageUrl = event.target.parentNode.href;
-    openModal(largeImageUrl);
+  if (!targetImg) {
+    return;
   }
-function openModal(largeImageUrl) {
-  const instance = basicLightbox.create(`<img src="${largeImageUrl}" alt="${images.description}">`);
+
+  const index = galleryItems.findIndex(item => item.contains(targetImg));
+
+  if (index !== -1) {
+    const largeImageUrl = images[index].original;
+    openModal(largeImageUrl, images[index].description);
+  }
+}
+
+function openModal(largeImageUrl, altText) {
+  const instance = basicLightbox.create(`<img src="${largeImageUrl}" alt="${altText}">`);
   instance.show();
 
-  // Прослуховування події натискання клавіші Escape
   document.addEventListener('keydown', handleKeyPress);
 
   function handleKeyPress(event) {
     if (event.code === 'Escape') {
       instance.close();
-      // Видалення обробника події після закриття модального вікна
       document.removeEventListener('keydown', handleKeyPress);
     }
   }
