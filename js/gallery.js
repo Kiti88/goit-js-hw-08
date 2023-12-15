@@ -65,30 +65,30 @@ const images = [
   },
 ];
 // Динамічне створення галереї
-  const galleryContainer = document.querySelector('.gallery');
-  const galleryItems = images.map(image => {
-    const li = document.createElement('li');
-    li.classList.add('gallery-item');
+const galleryContainer = document.querySelector('.gallery');
+const galleryItems = images.map(image => {
+  const li = document.createElement('li');
+  li.classList.add('gallery-item');
 
-    const link = document.createElement('a');
-    link.classList.add('gallery-link');
-    link.href = image.original;
+  const link = document.createElement('a');
+  link.classList.add('gallery-link');
+  link.href = image.original;
 
-    const img = document.createElement('img');
-    img.classList.add('gallery-image');
-    img.src = image.preview;
-    img.alt = image.description;
+  const img = document.createElement('img');
+  img.classList.add('gallery-image');
+  img.src = image.preview;
+  img.alt = image.description;
 
-    link.appendChild(img);
-    li.appendChild(link);
+  link.appendChild(img);
+  li.appendChild(link);
 
-    return li;
-  });
+  return li;
+});
 
-  galleryContainer.append(...galleryItems);
+galleryContainer.append(...galleryItems);
 
-  // Прослуховування кліка по зображенню
-  galleryContainer.addEventListener('click', handleGalleryClick);
+// Прослуховування кліка по зображенню
+galleryContainer.addEventListener('click', handleGalleryClick);
 
 function handleGalleryClick(event) {
   event.preventDefault();
@@ -106,12 +106,6 @@ function handleGalleryClick(event) {
     openModal(largeImageUrl, images[index].description);
   }
 }
-
-function openModal(largeImageUrl, altText) {
-  const instance = basicLightbox.create(`<img src="${largeImageUrl}" alt="${altText}">`);
-  instance.show();
-
-  document.addEventListener('keydown', handleKeyPress);
 
 function openModal(largeImageUrl, altText) {
   const instance = basicLightbox.create(
