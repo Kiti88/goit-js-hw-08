@@ -64,7 +64,6 @@ const images = [
     description: "Lighthouse Coast Sea",
   },
 ];
-// Динамічне створення галереї
 const galleryContainer = document.querySelector('.gallery');
 const galleryItems = images.map(image => {
   const li = document.createElement('li');
@@ -73,6 +72,7 @@ const galleryItems = images.map(image => {
   const link = document.createElement('a');
   link.classList.add('gallery-link');
   link.href = image.original;
+  link.dataset.source = image.original; // Додавання даних для зручності
 
   const img = document.createElement('img');
   img.classList.add('gallery-image');
@@ -87,24 +87,21 @@ const galleryItems = images.map(image => {
 
 galleryContainer.append(...galleryItems);
 
-// Прослуховування кліка по зображенню
 galleryContainer.addEventListener('click', handleGalleryClick);
 
 function handleGalleryClick(event) {
   event.preventDefault();
 
-  const targetImg = event.target.closest('.gallery-image');
+  const targetLink = event.target.closest('.gallery-link');
 
-  if (!targetImg) {
+  if (!targetLink) {
     return;
   }
 
-  const index = galleryItems.findIndex(item => item.contains(targetImg));
+  const largeImageUrl = targetLink.dataset.source;
+  const altText = targetLink.querySelector('.gallery-image').alt;
 
-  if (index !== -1) {
-    const largeImageUrl = images[index].original;
-    openModal(largeImageUrl, images[index].description);
-  }
+  openModal(largeImageUrl, altText);
 }
 
 function openModal(largeImageUrl, altText) {
