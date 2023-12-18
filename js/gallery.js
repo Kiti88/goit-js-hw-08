@@ -90,30 +90,6 @@ const galleryItems = images.map(createGalleryItem);
 
 galleryContainer.append(...galleryItems);
 
-
-const galleryContainer = document.querySelector('.gallery');
-const galleryItems = images.map(image => {
-  const li = document.createElement('li');
-  li.classList.add('gallery-item');
-
-  const link = document.createElement('a');
-  link.classList.add('gallery-link');
-  link.href = image.original;
-  link.dataset.source = image.original; // Додавання даних для зручності
-
-  const img = document.createElement('img');
-  img.classList.add('gallery-image');
-  img.src = image.preview;
-  img.alt = image.description;
-
-  link.appendChild(img);
-  li.appendChild(link);
-
-  return li;
-});
-
-galleryContainer.append(...galleryItems);
-
 galleryContainer.addEventListener('click', handleGalleryClick);
 
 function handleGalleryClick(event) {
